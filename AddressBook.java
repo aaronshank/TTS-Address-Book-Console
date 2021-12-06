@@ -23,15 +23,23 @@ public class AddressBook {
                     addEntry();
                     break;
                 case 2:
+                    removeEntry();
                     break;
                 case 3:
+                    searchEntry();
                     break;
                 case 4:
+                    printContents();
                     break;
                 case 5:
+                    deleteAddressBook();
                     break;
                 case 6:
                     isRunning = false;
+                    break;
+                default:
+                    System.out.println("Please enter a valid choice.");
+                    break;
             }
         }
         input.close();
@@ -50,5 +58,21 @@ public class AddressBook {
         entry.setEmailAddress(input.nextLine());
         System.out.println("Added new entry!");
         input.close();
+    }
+
+    static void removeEntry() {
+
+    }
+
+    static void searchEntry() {
+
+    }
+
+    static void printContents() {
+
+    }
+
+    static void deleteAddressBook() {
+
     }
 }
