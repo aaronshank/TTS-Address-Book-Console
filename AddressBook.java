@@ -50,7 +50,6 @@ public class AddressBook {
         // Writes to a file
         try {
             FileWriter writer = new FileWriter("test.txt");
-            int count = 1;
             for (Entry ent : entries) {
                 writer.write("Entry " + count + System.lineSeparator());
                 writer.write("First Name: " + ent.getFirstName() + System.lineSeparator());
@@ -58,7 +57,6 @@ public class AddressBook {
                 writer.write("Phone Number: " + ent.getPhoneNumber() + System.lineSeparator());
                 writer.write(
                         "Email Address: " + ent.getEmailAddress() + System.lineSeparator() + System.lineSeparator());
-                count++;
             }
             writer.close();
         } catch (FileNotFoundException e) {
