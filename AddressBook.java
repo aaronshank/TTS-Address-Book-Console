@@ -1,12 +1,6 @@
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -62,15 +56,16 @@ public class AddressBook {
                 writer.write("First Name: " + ent.getFirstName() + System.lineSeparator());
                 writer.write("Last Name: " + ent.getLastName() + System.lineSeparator());
                 writer.write("Phone Number: " + ent.getPhoneNumber() + System.lineSeparator());
-                writer.write("Email Address: " + ent.getEmailAddress() + System.lineSeparator() + System.lineSeparator());
+                writer.write(
+                        "Email Address: " + ent.getEmailAddress() + System.lineSeparator() + System.lineSeparator());
                 count++;
             }
             writer.close();
-          } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
-          } catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-          }
+        }
     }
 
     // Creates instance of Entry and adds into ArrayList
