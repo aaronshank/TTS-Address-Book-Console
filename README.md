@@ -13,7 +13,7 @@ The application should be able to do the following:
 	 - Print the contents of the address book
 	 - Delete the contents of the address book
 	 - Quit the program
- - 
+
 ## Entry Structure
 Entries should be contained in a class. Each entry should contain the following properties:
  - First name
