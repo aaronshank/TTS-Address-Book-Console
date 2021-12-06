@@ -1,10 +1,10 @@
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class AddressBook {
-    public static Scanner input = new Scanner(System.in);
-    static List<Entry> entries = new ArrayList<>();
+    static Scanner input = new Scanner(System.in);
+    static ArrayList<Entry> entries = new ArrayList<>();
 
     public static void main(String[] args) {
         boolean isRunning = true;
@@ -59,14 +59,21 @@ public class AddressBook {
     }
 
     static void removeEntry() {
-        Entry entry = new Entry();
         System.out.print("\nEnter an entry's email to remove: ");
         String email = input.nextLine();
-        entries.remove(entries.indexOf(entry.getEmailAddress() == email));
+        deleteEntry(email);
+    }
+
+    static void deleteEntry(String email) {
+        for (Iterator<Entry> iterator = entries.iterator(); iterator.hasNext();) {
+            Entry ent = iterator.next();
+            if (ent.getEmailAddress().equals(email)) {
+                iterator.remove();
+            }
+        }
     }
 
     static void searchEntry() {
-        Entry entry = new Entry();
         boolean isFound = false;
         while (!isFound) {
             System.out.println("\n1) First Name");
@@ -79,16 +86,10 @@ public class AddressBook {
             String search = input.nextLine();
             switch (searchCriteria) {
                 case 1:
-                    //entries.contains(entry.getFirstName().startsWith(search));
-                    isFound = true;
-                    break;
                 case 2:
-                    isFound = true;
-                    break;
                 case 3:
-                    isFound = true;
-                    break;
                 case 4:
+                    iterableSearch(searchCriteria, search);
                     isFound = true;
                     break;
                 default:
@@ -97,22 +98,66 @@ public class AddressBook {
         }
     }
 
-    static void printContents() {
+    static void iterableSearch(int searchType, String search) {
+        ArrayList<Entry> tempEntry = new ArrayList<>();
         int count = 1;
-        for(Entry entry : entries) {
-            System.out.println("*******************");
-            System.out.println("Entry " + count);
-            System.out.println("First Name: " + entry.getFirstName());
-            System.out.println("Last Name: " + entry.getLastName());
-            System.out.println("Phone Number: " + entry.getPhoneNumber());
-            System.out.println("Email address: " + entry.getEmailAddress());
-            System.out.println("*******************");
-            count++;
+        for (Iterator<Entry> iterator = entries.iterator(); iterator.hasNext();) {
+            Entry ent = iterator.next();
+            switch (searchType) {
+                case 1:
+                    if (ent.getFirstName().startsWith(search)) {
+                        tempEntry.add(ent);
+                    }
+                    break;
+                case 2:
+                    if (ent.getLastName().startsWith(search)) {
+                        tempEntry.add(ent);
+                    }
+                    break;
+                case 3:
+                    if (ent.getPhoneNumber().startsWith(search)) {
+                        tempEntry.add(ent);
+                    }
+                    break;
+                case 4:
+                    if (ent.getEmailAddress().startsWith(search)) {
+                        tempEntry.add(ent);
+                    }
+                    break;
+            }
+        }
+        if (!tempEntry.isEmpty()) {
+            for (Entry entry : tempEntry) {
+                System.out.println("\n*******************");
+                System.out.println("Entry " + count);
+                System.out.println("First Name: " + entry.getFirstName());
+                System.out.println("Last Name: " + entry.getLastName());
+                System.out.println("Phone Number: " + entry.getPhoneNumber());
+                System.out.println("Email address: " + entry.getEmailAddress());
+                System.out.println("*******************");
+                count++;
+            }
+        }
+    }
+
+    static void printContents() {
+        if (!entries.isEmpty()) {
+            int count = 1;
+            for (Entry entry : entries) {
+                System.out.println("\n*******************");
+                System.out.println("Entry " + count);
+                System.out.println("First Name: " + entry.getFirstName());
+                System.out.println("Last Name: " + entry.getLastName());
+                System.out.println("Phone Number: " + entry.getPhoneNumber());
+                System.out.println("Email address: " + entry.getEmailAddress());
+                System.out.println("*******************");
+                count++;
+            }
         }
     }
 
     static void deleteAddressBook() {
         entries.clear();
-        System.out.println("Address book cleared!");
+        System.out.println("\nAddress book cleared!");
     }
 }
