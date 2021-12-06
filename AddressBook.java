@@ -1,3 +1,12 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -5,7 +14,7 @@ import java.util.regex.Pattern;
 
 public class AddressBook {
     static Scanner input = new Scanner(System.in); // Global scanner since many methods use it
-    static ArrayList<Entry> entries = new ArrayList<>();
+    static ArrayList<Entry> entries = new ArrayList<Entry>();
 
     public static void main(String[] args) {
         boolean isRunning = true;
@@ -43,7 +52,25 @@ public class AddressBook {
                     System.out.println("Please enter a valid choice.");
             }
         }
-        input.close();
+
+        // Writes to a file
+        try {
+            FileWriter writer = new FileWriter("test.txt");
+            int count = 1;
+            for (Entry ent : entries) {
+                writer.write("Entry " + count + System.lineSeparator());
+                writer.write("First Name: " + ent.getFirstName() + System.lineSeparator());
+                writer.write("Last Name: " + ent.getLastName() + System.lineSeparator());
+                writer.write("Phone Number: " + ent.getPhoneNumber() + System.lineSeparator());
+                writer.write("Email Address: " + ent.getEmailAddress() + System.lineSeparator() + System.lineSeparator());
+                count++;
+            }
+            writer.close();
+          } catch (FileNotFoundException e) {
+            e.printStackTrace();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
     }
 
     // Creates instance of Entry and adds into ArrayList
