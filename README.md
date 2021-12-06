@@ -9,3 +9,6 @@ The application should be able to do the following:
     * Print the contents of the address book
     * Delete the contents of the address book
     * Quit the program
+
+# My Notes
+I added a regex for phone and email validation.
