@@ -4,7 +4,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class AddressBook {
-    static Scanner input = new Scanner(System.in);
+    static Scanner input = new Scanner(System.in); // Global scanner since many methods use it
     static ArrayList<Entry> entries = new ArrayList<>();
 
     public static void main(String[] args) {
@@ -19,6 +19,7 @@ public class AddressBook {
             System.out.println("6) Quit");
             System.out.print("\nPlease choose what you'd like to do with the database: ");
             int response = Integer.parseInt(input.nextLine());
+
             switch (response) {
                 case 1:
                     addEntry();
@@ -36,7 +37,7 @@ public class AddressBook {
                     deleteAddressBook();
                     break;
                 case 6:
-                    isRunning = false;
+                    isRunning = false; // This will cancel while loop and end program
                     break;
                 default:
                     System.out.println("Please enter a valid choice.");
@@ -45,8 +46,10 @@ public class AddressBook {
         input.close();
     }
 
+    // Creates instance of Entry and adds into ArrayList
     static void addEntry() {
         Entry entry = new Entry();
+
         System.out.print("\nFirst Name: ");
         entry.setFirstName(input.nextLine());
         System.out.print("Last Name: ");
@@ -55,14 +58,17 @@ public class AddressBook {
         entry.setPhoneNumber(input.nextLine());
         System.out.print("Email Address: ");
         entry.setEmailAddress(input.nextLine());
+
+        // Checks if the phone number and email address is a valid format
         if (verifyEntry(entry)) {
             entries.add(entry);
-            System.out.println("Added new entry!");
+            System.out.println("\nAdded new entry!");
         } else {
             System.out.println("Please enter a valid phone number and/or email address");
         }
     }
 
+    // Nesting methods for clarity on the phone number and email checks
     static boolean verifyEntry(Entry entry) {
         if (isValidPhone(entry.getPhoneNumber()) && isValidEmail(entry.getEmailAddress())) {
             return true;
@@ -70,31 +76,37 @@ public class AddressBook {
         return false;
     }
 
-    static boolean isValidEmail(String s) {
-        String emailFormat = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+(?:\\."
+    // Checks for valid Email Address
+    static boolean isValidEmail(String email) {
+        // Regex for Email format
+        String emailRegex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+(?:\\."
                 + "[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
-        Pattern p = Pattern.compile(emailFormat);
-        if (s == null) {
+        Pattern p = Pattern.compile(emailRegex);
+        if (email == null) {
             return false;
         }
-        return p.matcher(s).matches();
+        return p.matcher(email).matches();
     }
 
-    static boolean isValidPhone(String s) {
-        String phoneFormat = "^(\\+\\d{1,3}( )?)?((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$";
-        return s.matches(phoneFormat);
-        // Pattern p = Pattern.compile("(0/91)?[7-9][0-9]{9}");
-        // Matcher m = p.matcher(s);
-        // return (m.find() && m.group().equals(s));
+    // Checks for valid Phone Number
+    static boolean isValidPhone(String phoneNumber) {
+        // Regex for Phone Number format
+        String phoneRegex = "^(\\+\\d{1,3}( )?)?((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$";
+        return phoneNumber.matches(phoneRegex);
     }
 
+    // Gets email address for the deleting method
     static void removeEntry() {
         System.out.print("\nEnter an entry's email to remove: ");
         String email = input.nextLine();
+        // Again, nesting methods for clarity
         deleteEntry(email);
     }
 
+    // Deletes a single entry based on email address
     static void deleteEntry(String email) {
+        // The contains(), indexOf(), starts with() ways weren't working for me, so I
+        // did it the more complicated way
         for (Iterator<Entry> iterator = entries.iterator(); iterator.hasNext();) {
             Entry ent = iterator.next();
             if (ent.getEmailAddress().equals(email)) {
@@ -103,8 +115,10 @@ public class AddressBook {
         }
     }
 
+    // Getting info for the search method
     static void searchEntry() {
         boolean isFound = false;
+
         while (!isFound) {
             System.out.println("\n1) First Name");
             System.out.println("2) Last Name");
@@ -112,9 +126,12 @@ public class AddressBook {
             System.out.println("4) Email Address");
             System.out.print("Choose a search type: ");
             int searchCriteria = Integer.parseInt(input.nextLine());
-            System.out.print("Enter your search: ");
+            System.out.print("Enter your search: "); // Getting the search statement before running the switch got rid
+                                                     // of redundancy in code
             String search = input.nextLine();
+
             switch (searchCriteria) {
+                // Doesn't matter what search method, so all 4 handled at once
                 case 1:
                 case 2:
                 case 3:
@@ -128,11 +145,15 @@ public class AddressBook {
         }
     }
 
+    // Search method
     static void iterableSearch(int searchType, String search) {
         ArrayList<Entry> tempEntry = new ArrayList<>();
-        int count = 1;
+        int count = 1; // Adding a count to make it more readable, NOT AN INDEX VALUE
+
+        // Goes through and adds all matches into a temporary ArrayList
         for (Iterator<Entry> iterator = entries.iterator(); iterator.hasNext();) {
             Entry ent = iterator.next();
+
             switch (searchType) {
                 case 1:
                     if (ent.getFirstName().startsWith(search)) {
@@ -156,6 +177,9 @@ public class AddressBook {
                     break;
             }
         }
+
+        // Prints contents of tempEntry
+        // Look at getting rid of 174-185 in favor of the method printContents()
         if (!tempEntry.isEmpty()) {
             for (Entry entry : tempEntry) {
                 System.out.println("\n*******************");
@@ -170,6 +194,7 @@ public class AddressBook {
         }
     }
 
+    // Prints arrayList
     static void printContents() {
         if (!entries.isEmpty()) {
             int count = 1;
@@ -186,6 +211,7 @@ public class AddressBook {
         }
     }
 
+    // Deletes everything
     static void deleteAddressBook() {
         entries.clear();
         System.out.println("\nAddress book cleared!");

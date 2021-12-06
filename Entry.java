@@ -7,6 +7,7 @@ public class Entry {
     public Entry() {
     }
 
+    // This is never utilized, but I had an idea of doing it this way instead of utilizing the setters
     public Entry(String firstName, String lastName, String phoneNumber, String emailAddress) {
         this.firstName = firstName;
         this.lastName = lastName;
