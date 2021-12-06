@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class AddressBook {
-    List<Entry> entries = new ArrayList<>();
+    static List<Entry> entries = new ArrayList<>();
 
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
@@ -57,6 +57,7 @@ public class AddressBook {
         System.out.print("Email Address: ");
         entry.setEmailAddress(input.nextLine());
         System.out.println("Added new entry!");
+        entries.add(entry);
         input.close();
     }
 
