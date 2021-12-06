@@ -3,14 +3,14 @@ import java.util.List;
 import java.util.Scanner;
 
 public class AddressBook {
+    public static Scanner input = new Scanner(System.in);
     static List<Entry> entries = new ArrayList<>();
 
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
         boolean isRunning = true;
 
         while (isRunning) {
-            System.out.println("1) Add an entry");
+            System.out.println("\n1) Add an entry");
             System.out.println("2) Remove an entry");
             System.out.println("3) Search for a specific entry");
             System.out.println("4) Print Address Book");
@@ -39,16 +39,14 @@ public class AddressBook {
                     break;
                 default:
                     System.out.println("Please enter a valid choice.");
-                    break;
             }
         }
         input.close();
     }
 
     static void addEntry() {
-        Scanner input = new Scanner(System.in);
         Entry entry = new Entry();
-        System.out.print("First Name: ");
+        System.out.print("\nFirst Name: ");
         entry.setFirstName(input.nextLine());
         System.out.print("Last Name: ");
         entry.setLastName(input.nextLine());
@@ -58,22 +56,63 @@ public class AddressBook {
         entry.setEmailAddress(input.nextLine());
         System.out.println("Added new entry!");
         entries.add(entry);
-        input.close();
     }
 
     static void removeEntry() {
-
+        Entry entry = new Entry();
+        System.out.print("\nEnter an entry's email to remove: ");
+        String email = input.nextLine();
+        entries.remove(entries.indexOf(entry.getEmailAddress() == email));
     }
 
     static void searchEntry() {
-
+        Entry entry = new Entry();
+        boolean isFound = false;
+        while (!isFound) {
+            System.out.println("\n1) First Name");
+            System.out.println("2) Last Name");
+            System.out.println("3) Phone Number");
+            System.out.println("4) Email Address");
+            System.out.print("Choose a search type: ");
+            int searchCriteria = Integer.parseInt(input.nextLine());
+            System.out.print("Enter your search: ");
+            String search = input.nextLine();
+            switch (searchCriteria) {
+                case 1:
+                    //entries.contains(entry.getFirstName().startsWith(search));
+                    isFound = true;
+                    break;
+                case 2:
+                    isFound = true;
+                    break;
+                case 3:
+                    isFound = true;
+                    break;
+                case 4:
+                    isFound = true;
+                    break;
+                default:
+                    System.out.println("Please choose a valid option");
+            }
+        }
     }
 
     static void printContents() {
-
+        int count = 1;
+        for(Entry entry : entries) {
+            System.out.println("*******************");
+            System.out.println("Entry " + count);
+            System.out.println("First Name: " + entry.getFirstName());
+            System.out.println("Last Name: " + entry.getLastName());
+            System.out.println("Phone Number: " + entry.getPhoneNumber());
+            System.out.println("Email address: " + entry.getEmailAddress());
+            System.out.println("*******************");
+            count++;
+        }
     }
 
     static void deleteAddressBook() {
-
+        entries.clear();
+        System.out.println("Address book cleared!");
     }
 }
