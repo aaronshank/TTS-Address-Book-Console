@@ -1,8 +1,11 @@
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -10,8 +13,25 @@ public class AddressBook {
     static Scanner input = new Scanner(System.in); // Global scanner since many methods use it
     static ArrayList<Entry> entries = new ArrayList<Entry>();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         boolean isRunning = true;
+
+        try {
+            List<String> entryLines = Files.readAllLines(java.nio.file.Paths.get("test.txt"), StandardCharsets.UTF_8);
+
+            for (String line : entryLines) {
+                Entry entry = new Entry();
+                String[] tokens = line.split("-");
+
+                entry.setFirstName(tokens[0]);
+                entry.setLastName(tokens[1]);
+                entry.setPhoneNumber(tokens[2]);
+                entry.setEmailAddress(tokens[3]);
+                entries.add(entry);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         while (isRunning) {
             System.out.println("\n1) Add an entry");
@@ -51,12 +71,7 @@ public class AddressBook {
         try {
             FileWriter writer = new FileWriter("test.txt");
             for (Entry ent : entries) {
-                writer.write("Entry " + count + System.lineSeparator());
-                writer.write("First Name: " + ent.getFirstName() + System.lineSeparator());
-                writer.write("Last Name: " + ent.getLastName() + System.lineSeparator());
-                writer.write("Phone Number: " + ent.getPhoneNumber() + System.lineSeparator());
-                writer.write(
-                        "Email Address: " + ent.getEmailAddress() + System.lineSeparator() + System.lineSeparator());
+                writer.write(ent.getFirstName() + "-" + ent.getLastName() + "-" + ent.getPhoneNumber() + "-" + ent.getEmailAddress() + System.lineSeparator());
             }
             writer.close();
         } catch (FileNotFoundException e) {
