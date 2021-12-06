@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AddressBook {
     static Scanner input = new Scanner(System.in);
@@ -54,8 +56,37 @@ public class AddressBook {
         entry.setPhoneNumber(input.nextLine());
         System.out.print("Email Address: ");
         entry.setEmailAddress(input.nextLine());
-        System.out.println("Added new entry!");
-        entries.add(entry);
+        if (verifyEntry(entry)) {
+            entries.add(entry);
+            System.out.println("Added new entry!");
+        } else {
+            System.out.println("Please enter a valid phone number and/or email address");
+        }
+    }
+
+    static boolean verifyEntry(Entry entry) {
+        if (isValidPhone(entry.getPhoneNumber()) && isValidEmail(entry.getEmailAddress())) {
+            return true;
+        }
+        return false;
+    }
+
+    static boolean isValidEmail(String s) {
+        String emailFormat = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+(?:\\."
+                + "[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
+        Pattern p = Pattern.compile(emailFormat);
+        if (s == null) {
+            return false;
+        }
+        return p.matcher(s).matches();
+    }
+
+    static boolean isValidPhone(String s) {
+        String phoneFormat = "^(\\+\\d{1,3}( )?)?((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$";
+        return s.matches(phoneFormat);
+        // Pattern p = Pattern.compile("(0/91)?[7-9][0-9]{9}");
+        // Matcher m = p.matcher(s);
+        // return (m.find() && m.group().equals(s));
     }
 
     static void removeEntry() {
